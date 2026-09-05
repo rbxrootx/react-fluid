@@ -1,4 +1,16 @@
 
+# React Fluid
+
+Experimental fork of React Flow 0.5.0: persistent motion controllers, seven
+spring presets, physical spring configuration, custom easing, continuous paths,
+overlapping reveals, and bounded collectible emitters.
+
+**[Read the new API, examples, limitations, and validation guide](FLUID.md)**
+
+The original API remains available. The upstream documentation is retained below.
+This fork has not been published to Wally; the install command below installs
+the original React Flow package, not React Fluid.
+
 <h3 align="center">
     <img src="https://i.imgur.com/I1CRYmc.png" alt="Slither Icon" width="160" />
     <br />

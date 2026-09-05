@@ -10,11 +10,7 @@ local function updateReactChild(child: any)
 	end
 
 	-- Shallow copy preserves element shape and keeps type field intact.
-	local cloned = {}
-	for k, v in child do
-		cloned[k] = v
-	end
-	return cloned
+	return table.clone(child)
 end
 
 return {

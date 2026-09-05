@@ -1,11 +1,12 @@
 [package]
-name = "outofbears/react-flow"
-description = "React Animation Library for Roblox"
-version = "0.5.0"
+name = "rbxrootx/react-fluid"
+description = "Persistent motion, continuous paths and overlapping reveals for React-Lua"
+version = "0.6.0"
+private = true
 authors = ["Jack Fox <jack@infernal.io>"]
-homepage = "https://github.com/outofbears/react-flow"
+homepage = "https://github.com/rbxrootx/react-fluid"
 registry = "https://github.com/UpliftGames/wally-index"
-repository = "https://github.com/outofbears/react-flow"
+repository = "https://github.com/rbxrootx/react-fluid"
 realm = "shared"
 
 [dependencies]

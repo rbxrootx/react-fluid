@@ -1,0 +1,10 @@
+{
+  "name": "ReactFluid",
+  "tree": {
+    "$className": "Model",
+    "ReactFluid": { "$path": "src" },
+    "React": { "$path": "tests/React.luau" },
+    "Promise": { "$path": "tests/Promise.luau" },
+    "Packages": { "$path": "Packages" }
+  }
+}
