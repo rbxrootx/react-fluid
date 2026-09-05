@@ -1,0 +1,24 @@
+{
+  "name": "ReactFluidValidation",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Packages": { "$path": "Packages" },
+      "ReactFluidValidation": {
+        "$className": "Model",
+        "ReactFluid": { "$path": "src" },
+        "React": { "$path": "tests/studio-react.luau" },
+        "Promise": { "$path": "tests/studio-promise.luau" },
+        "Report": { "$className": "RemoteEvent" }
+      }
+    },
+    "ServerScriptService": {
+      "Validation": { "$path": "tests/studio.server.luau" }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Validation": { "$path": "tests/studio.client.luau" }
+      }
+    }
+  }
+}

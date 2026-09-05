@@ -1,1 +1,5 @@
 std = "roblox"
+
+[lints]
+# React-Lua accepts Name as a property; the lint targets legacy Roact.
+roblox_incorrect_roact_usage = "allow"

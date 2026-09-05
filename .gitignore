@@ -6,3 +6,6 @@ roblox.yml
 wally.lock
 sourcemap.json
 *-sourcemap.json
+*.rbxl
+*.rbxm
+.tmp/
