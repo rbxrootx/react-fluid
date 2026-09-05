@@ -9,6 +9,13 @@ animation changes. Use springs for interactive state, one continuous path for
 travel, and overlapping start offsets for choreography. More keyframes alone
 do not make motion more fluid.
 
+[Installation](docs/installation.md) · [Recipes](docs/recipes.md) ·
+[Migration](docs/migration.md) · [Compatibility hooks](docs/legacy-api.md)
+
+This guide uses `Fluid` for your package import and
+`Tokens = Fluid.MotionTokens`. All methods on controllers and emitters use colon
+syntax. Plain helpers such as `Fluid.stagger` use dot syntax.
+
 ## One controller for a component
 
 ```lua
@@ -40,7 +47,8 @@ frozen velocity. `impulse` adds velocity. `finish` applies the final queued goal
 and completes. `destroy` releases the controller permanently. Each new command
 cancels the prior timeline and its completion callback. Completion callbacks
 run once after settling, not after cancellation. Callbacks may retarget motion.
-The hook stops its controller on unmount.
+The hook stops its controller on unmount. An imperative controller created with
+`createMotion` needs an explicit owner that calls `destroy` during cleanup.
 
 ## Springs and easing
 
@@ -71,7 +79,7 @@ for scale/position; clamp a mapped binding for transparency or clipping.
 ```lua
 motion:sequence({
     { at = 0, to = { scale = 1.08 }, transition = Tokens.Spring.responsive },
-    { at = Tokens.Duration.fast, to = { scale = 1 }, transition = Tokens.Spring.smooth },
+    { at = Tokens.Duration.reveal * 0.5, to = { scale = 1 }, transition = Tokens.Spring.smooth },
 }, { onComplete = finished })
 ```
 
@@ -106,6 +114,13 @@ It reverses mid-flight when closed. This is a 2D unfolding reveal, not a 3D
 perspective rotation or a replicated subtree for every shutter slat. Use an
 unrotated container because Roblox clipping does not support rotated ancestors.
 `useReveal(open, options)` exposes the same progress binding for custom masks.
+The built-in Reveal animates its outer height and therefore changes list layout.
+Reserve height in a wrapper when a scrollbar or neighboring controls must stay
+fixed. BeeGame uses its own fixed-height ShopRevealRow for that case.
+
+Reveal/useReveal options include `initialOpen`, `reducedMotion`, `spring`, `delay`
+and `exitDelay`. Reveal also accepts `height` (required positive pixels), `width`
+(UDim), `Name`, `Position`, `AnchorPoint`, `LayoutOrder`, `ZIndex` and children.
 
 ## Coin and honey pickups
 
@@ -141,6 +156,9 @@ the capacity cap drops overflow. Slots and their visuals can be reused. `clear`
 and `destroy` release slots with `arrived=false`, so cancellation cannot grant a
 visual arrival event. Rewards remain server-owned. The emitter also accepts
 Vector3 world paths; apply world positions with your existing BulkMoveTo system.
+`onUpdate` receives raw 0–1 progress as its third argument; easing is applied to
+the sampled path position. `emitter.count` reports active slots. Emitters do not
+read Reduced Motion themselves: the application stops emissions and clears them.
 
 For custom effects use `Path.quadratic`, `Path.cubic`, `Path.spline(points, tension)`
 or `Path.uniform(curve, samples)`. Spline segments share tangents; uniform caches
@@ -171,8 +189,11 @@ fixture checks its installed React Flow package; standalone it checks the
 fork's preserved compatibility hooks. `tests/studio.client.luau` contains the
 assertions. This fixture checks behavior, not the aesthetic quality of a design.
 
-This branch is experimental and is not published to the Wally registry. BeeGame
-uses upstream 0.5.0; adopting the fork is a separate migration.
+This source version is experimental and is not published to the Wally registry.
+BeeGame now adopts runtime commit `387b5a64a7437c7ffcac49fe0830eede629031a4`
+through a pinned vendor snapshot. Its existing ReactFlow import and ReactFluid
+alias resolve to the same module. Cash/honey flights, window transitions and
+shop-row reveals use the new API. See [migration notes](docs/migration.md).
 
 For a portable local Roblox model, run `wally install`, then
 `rojo build fluid.project.json -o ReactFluid.rbxm`. Insert that model and require
@@ -180,9 +201,15 @@ its `ReactFluid` child. The sibling dependency aliases are included. In a game
 that already uses React, point both the model and your UI at the same React
 package; do not mount hooks from a second React copy under an existing renderer.
 
-Validation on September 5, 2026: 271 deterministic assertions passed; live Studio
+Historical validation on September 5, 2026: 271 deterministic assertions passed; live Studio
 play checks passed for the game's 0.5.0 spring/tween/declarative hooks, new scalar
 and Vector2 bindings, velocity-preserving retargeting, reveal reversal, no extra
 React renders from animation, and unmount cleanup. The measured scalar benchmark
 was 3.306 ms/frame upstream vs 2.294 ms/frame Fluid (1.44x) on this development
 machine. This is a limited CPU workload, not a game FPS or device guarantee.
+
+Later BeeGame integration checks exercised pooled pickups, counter impulses,
+window interruption and Reduced Motion. Arrival-pulse consistency and Reduced
+Motion closing still have unresolved live checks. The earlier library results
+do not imply that every integration case passed. No tests or benchmarks were
+rerun for the documentation and logo update.
