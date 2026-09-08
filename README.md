@@ -85,16 +85,6 @@ CFrame and the other upstream value types remain on the compatibility hooks.
 Keep timing and spring settings in your application's motion tokens. Prefer a
 small set of coherent presets over new tuning values at every call site.
 
-## Used in BeeGame
-
-BeeGame has adopted a pinned source snapshot of this fork for cash/honey pickup
-flights, spring-driven windows and staggered shop reveals. Its existing ReactFlow
-imports and new ReactFluid imports resolve to the same module. The new effects
-read the game's Reduced Motion setting.
-
-Integration is still being refined: arrival-pulse consistency and Reduced Motion
-window closing have unresolved live checks. This is adoption evidence, not a claim
-that every game integration case has passed validation.
 
 ## Performance and boundaries
 
